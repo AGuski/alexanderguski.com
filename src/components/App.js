@@ -46,6 +46,9 @@ class App extends React.Component {
       <div>
         <header>
           <h1 id="brand" >Alexander <br/><span className="indent">Guski</span></h1>
+          <div class="social-link-container">
+            <i class="fa fa-github" aria-hidden="true"></i>
+          </div>
         </header>
 
         <main>
