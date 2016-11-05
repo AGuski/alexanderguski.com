@@ -1,0 +1,40 @@
+{
+  "name": "baApp",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular-animate": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
+    "jquery": "^3.1.1",
+    "angular-resource": "^1.5.8",
+    "angular-ui-router": "^0.3.1",
+    "animate.css": "^3.5.2",
+    "angular": "^1.5.8",
+    "angular-lazytube": "^0.2.3",
+    "angular-loader": "^1.5.8",
+    "angular-motion": "^0.4.4",
+    "normalize-css": "^5.0.0",
+    "font-awesome": "^4.6.3",
+    "angular-scroll-watch": "^0.6.1",
+    "angular-material": "^1.1.1",
+    "angular-aria": "^1.5.8",
+    "three.js": "^0.82.0",
+    "gsap": "^1.19.0"
+  },
+  "devDependencies": {},
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "scss/font-awesome.scss",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.woff2"
+      ]
+    }
+  },
+  "resolutions": {
+    "jquery": "~2.1.4",
+    "angular": "~1.5.3"
+  }
+}

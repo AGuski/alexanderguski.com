@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css?family=Abel|Fira+Mono|PT+Mono|Titillium+Web:200,300,400|Varela+Round');
+
+/* variables */
+
+$app-padding: 30px;
+
+
+html, body {
+  background: #2b2b2b;
+  /*color: #f0f0f0;*/
+  color: #807e7e;
+  font-family: 'Varela Round', sans-serif;
+  text-align: center;
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header, footer {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+header {
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: $app-padding $app-padding 0;
+
+  #brand {
+    font-family: 'Abel', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0px;
+    font-size: 30px;
+    color: #6d6d6d;
+    line-height: 0.94em;
+    text-align: right;
+    margin-top: 0;
+  }
+  span.indent {
+    padding-left: 16px;
+  }
+
+  #brand:before {
+    content: "[ ";
+  }
+
+  #brand:after {
+    content: " ]";
+  }
+
+  #brand:before, #brand:after {
+    color: #cccccc;
+  }
+
+  .social-link-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+  }
+}
+
+footer {
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 $app-padding $app-padding;
+
+
+  #imprint-link {
+    color: #6d6d6d;
+    text-decoration: none;
+  }
+
+  #day-night-switch {
+    color: #6d6d6d;
+    cursor: pointer;
+    text-decoration: none;
+  }
+}
+
+a {
+  color: #cccccc;
+}
+
+a:hover, a:active {
+  color: #ffffff;
+}
+
+#content-bottom {
+  position: absolute;
+  top: 50%;
+}
+
+.text-area {
+  text-align: left;
+  display: block;
+  margin: 30px 30px 0;
+  min-width: 320px;
+  max-width: 500px;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+
+  /*transform: rotate3d(0.3, -0.5, 0, -17deg);*/
+
+}
+
+
+
+#debug {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  width: 500px;
+  height: 100px;
+}

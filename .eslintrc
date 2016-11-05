@@ -1,0 +1,25 @@
+{
+  "extends": "eslint:recommended",
+  "plugins": ["angular"],
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "globals": {
+    "angular": true,
+    "module": true,
+    "inject": true,
+    "THREE": true,
+    "TweenMax": true,
+    "Power2": true,
+    "Power3": true
+  },
+  "rules": {
+    "no-console": 1,
+    "angular/log": 1,
+    "angular/window-service": 1
+  }
+}
