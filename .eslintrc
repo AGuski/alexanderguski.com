@@ -14,12 +14,16 @@
     "inject": true,
     "THREE": true,
     "TweenMax": true,
+    "TimelineMax": true,
     "Power2": true,
-    "Power3": true
+    "Power3": true,
+    "Power4": true
   },
   "rules": {
     "no-console": 1,
     "angular/log": 1,
-    "angular/window-service": 1
+    "angular/window-service": 1,
+    "angular/on-watch": 1,
+    "no-fallthrough": 0
   }
 }

@@ -1,0 +1,22 @@
+info-box > div {
+  perspective: 800px;
+}
+
+.info-box {
+  display: flex;
+  margin: 30px 30px 0;
+  max-width: 500px;
+  text-align: left;
+  font-size: $font-size-text;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+
+  .info-box-title {
+    margin-right: 10px;
+  }
+  
+  .info-box-content {
+    padding-left: 10px;
+    border-left: solid 1px;
+  }
+}

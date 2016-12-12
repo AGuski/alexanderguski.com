@@ -3,10 +3,24 @@
   height: 170px;
 }
 
-.cube-menu-item{
+.cube-menu-items {
   position: absolute;
-  font-size: 16px;
+  opacity: 0;
+}
+
+.cube-menu-item {
+  text-decoration: none;
+  position: absolute;
+  font-size: $font-size-text;
   cursor: pointer;
   white-space: nowrap;
-  opacity: 0;
+  
+
+  &:hover {
+    opacity: 1 !important;
+  }
+
+  &.active {
+    opacity: 1 !important;
+  }
 }

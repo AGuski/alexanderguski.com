@@ -1,3 +1,26 @@
+let rtParameters = {
+    minFilter: THREE.NearestFilter,
+    magFilter: THREE.LinearMipMapLinearFilter,
+    format: THREE.RGBAFormat,
+    stencilBuffer: true
+  };
+
+import './postprocessing/EffectComposer';
+import './shaders/CopyShader';
+import './shaders/CustomGlitchShader';
+import './shaders/ConvolutionShader';
+import './shaders/FXAAShader';
+import './shaders/SMAAShader';
+import './postprocessing/ShaderPass';
+import './postprocessing/RenderPass'; 
+import './postprocessing/CustomGlitchPass';
+import './postprocessing/BloomPass';
+import './postprocessing/SMAAPass';
+
+import './shaders/ColorGradeShader';
+import './postprocessing/ColorGradePass';
+import './postprocessing/ClearPass';
+
 export class WebGLCanvas {
   constructor(element) {
     /* get canvas information */
@@ -5,14 +28,13 @@ export class WebGLCanvas {
     this.canvasWidth = element.width();
     this.canvasHeight = element.height();
 
-    // console.log(this.canvasHeight);
-
     /* setup WebGL renderer */
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true
     });
     this.renderer.setSize( this.canvasWidth, this.canvasHeight );
+    this.renderer.setPixelRatio( window.devicePixelRatio );
 
     /* append renderer to canvas */
     element.get(0).appendChild( this.renderer.domElement );
@@ -32,22 +54,73 @@ export class WebGLCanvas {
 
     element[0].addEventListener('mousedown', this.onMouseDown.bind(this), false);
 
+     /* Composer */
+
+    // this.renderer.autoClear = false; // EFFECTCOMPOSER ???
+    this.composer = new THREE.EffectComposer( this.renderer, 
+    new THREE.WebGLRenderTarget(
+      this.canvasWidth, this.canvasHeight, rtParameters));
+
+    /* RenderPass for Objects in scene3D */
+    let renderPass = new THREE.RenderPass( this.scene, this.camera);
+    renderPass.clear = true;
+    this.composer.addPass( renderPass );
+
+    /* ColdorGrade Shader Pass */
+    // let colorGradePass = new THREE.ColorGradePass();
+    // colorGradePass.renderToScreen = true;
+    // this.composer.addPass( colorGradePass );
+
+    // Make sure screen resolution is set!
+    // FXAAPass.uniforms.resolution.value.set(2560, 1600);
+
+    /* Bloom Effect Pass */
+    // let effectBloom = new THREE.BloomPass(9);
+    // effectBloom.clear = false;
+    // this.composer.addPass( effectBloom );
+
+    /* Glitch Shader Pass */
+    let glitchPass = new THREE.CustomGlitchPass();
+    glitchPass.renderToScreen = true;
+    this.composer.addPass( glitchPass );
     
+    // let FXAAPass = new THREE.ShaderPass(THREE.FXAAShader);
+    // this.composer.addPass(FXAAPass);
+    // FXAAPass.renderToScreen = true;
+    // this.composer.setSize(this.canvasWidth, this.canvasHeight);
+
+    // // Make sure screen resolution is set!
+    // FXAAPass.uniforms.resolution.value.set(1/ this.canvasWidth, 1 / this.canvasHeight);
+
+    // let smaaPass = new THREE.SMAAPass( this.canvasWidth, this.canvasHeight );
+    // smaaPass.renderToScreen = true;
+    // this.composer.addPass( smaaPass );
+
+    // let effectCopy = new THREE.ShaderPass(THREE.CopyShader);
+    // effectCopy.renderToScreen = true;
+    // this.composer.addPass(effectCopy);
+
+    let clock = new THREE.Clock()
+
     /* render loop */
     let render = () => {
+      this.delta = clock.getDelta();
       requestAnimationFrame( render );
       this.animation();
-      this.renderer.render( this.scene, this.camera );
+      this.composer.render( this.delta );
+      // this.renderer.render( this.scene, this.camera );
     }
     render();
 
-    window.addEventListener( 'resize', () => {
+    this.resize = () => {
       this.camera.aspect = this.canvasWidth / this.canvasHeight;
       this.camera.updateProjectionMatrix();
 
       this.renderer.setSize( this.canvasWidth, this.canvasHeight );
+    }
+    this.resize = this.resize.bind(this);
 
-    }, false );
+    window.addEventListener( 'resize', this.resize, false );
   }
 
   /* add object to this canvas scene */

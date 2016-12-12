@@ -1,4 +1,4 @@
-export function config ($provide, $logProvider, $locationProvider, $mdInkRippleProvider, $mdThemingProvider) {
+export function config ($provide, $logProvider, $locationProvider) {
   'ngInject';
   // Enable log
   $logProvider.debugEnabled(true);
@@ -13,15 +13,5 @@ export function config ($provide, $logProvider, $locationProvider, $mdInkRippleP
         }, 1000);
     };
   });
-
-  // Set options third-party lib
-  $mdInkRippleProvider.disableInkRipple();
-
-  
-  $mdThemingProvider.theme('beastyArt')
-    .primaryPalette('blue')
-    .accentPalette('grey')
-    .warnPalette('red');
-  $mdThemingProvider.setDefaultTheme('beastyArt');
 
 }

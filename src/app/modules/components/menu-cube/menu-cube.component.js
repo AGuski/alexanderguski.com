@@ -29,20 +29,16 @@ const connections = [
   [0,4],[1,5],[2,6],[3,7]
 ];
 
-
-/**
- *  TODO: Use swipe from Angular material??
- * 
- */
-
 let MenuCubeController = class {
-  constructor($window, $element, $state) {
+  constructor($window, $element, $state, rotateCube, $timeout) {
     'ngInject';
     
     this.$window = $window;
     this.$element = $element;
     this.$state = $state;
-    this.menuItems;
+    this.rotateCube = rotateCube;
+    this.$timeout = $timeout;
+    this.hideItems = false;
     this.cube = new WireObject(vertices, connections, '#6d6d6d');
 
     // the mighty autoRotator
@@ -51,11 +47,14 @@ let MenuCubeController = class {
   }
 
   $onInit() {
-
+    this.menuItems = angular.element('.cube-menu-item');
+    
     // set StartingPosition of not landing
     if (this.$state.current.name !== 'app.landing') {
       this.$element.css({transform: 'translateY(-115px)'});
     }
+
+    
 
     let points;
 
@@ -63,7 +62,7 @@ let MenuCubeController = class {
 
     cube.rotating = true;
 
-    let cubeCanvas = new WebGLCanvas(angular.element('#cube-canvas'));    
+    let cubeCanvas = new WebGLCanvas(angular.element('#cube-canvas'));   
 
     let pointMaterial = new THREE.PointsMaterial( {color: '#ffffff', size: 0, sizeAttenuation: false} )
     let pointGeometry = new THREE.Geometry();
@@ -85,6 +84,7 @@ let MenuCubeController = class {
       let top = (-projection.y+1)*(cubeCanvas.getHeight()/2)-12;
       let z = (1-projection.z)*10+0.5;
       element.style.transform = `perspective(700px) translate3d(${left}px, ${top}px, 0px) scale(${z},${z})`;
+      element.style.opacity = z*z;
     }
 
     cube.add(points);
@@ -98,45 +98,65 @@ let MenuCubeController = class {
     cubeCanvas.add( cube );
 
     cube.rotation.x = 0.3;
+    // this.resizeCanvas(cubeCanvas, 180,180);
 
-    // Text links
-    this.menuItems = angular.element('.cube-menu-item');
+    this.rotateCube.subscribeToStateChange((state) => {
+      this.cube.rotating = false;
+      let rotatePosition;
+      switch (state) {
+        case "app.landing":
+          this.cube.rotating = true;
+          break;
+        case "app.imprint":
+          this.toggleItems();
+          break;
+        case "app.work":
+          rotatePosition = {
+            x: 0.3,
+            y: 0.4,
+            z: 0
+          };
+          break;
+        case "app.audio":
+          rotatePosition = {
+            x: 0.3, 
+            y: Math.PI+0.4,
+            z: 0
+          };
+          break;
+        case "app.contact":
+          rotatePosition = {
+            x: 0.3, 
+            y: Math.PI+(Math.PI/2)+0.4,
+            z: 0
+          };
+          break;
+        case "app.about":
+          rotatePosition = {
+            x: 0.3, 
+            y:Math.PI-(Math.PI/2)+0.4,
+            z: 0
+          };
+          break;
+        default:
+          break;
+      }
 
-    this.menuItems[0].addEventListener('click', () => {
-      this.changeState('app.work', {
-        x: 0.3,
-        y: 0.4,
-        z: 0
-      });
+      if (rotatePosition) {
+        this.autoRotator.rotateTo(rotatePosition, () => {
+          this.rotateCube.done();
+        });
+      } else {
+        this.$timeout (() => {
+          this.rotateCube.done();
+        },0);
+      }
     });
-
-    this.menuItems[1].addEventListener('click', () => {
-      this.changeState('app.audio', {
-        x: 0.3, 
-        y: Math.PI+0.4,
-        z: 0
-      });
-    });
-
-    this.menuItems[2].addEventListener('click', () => {
-      this.changeState('app.contact', {
-        x: 0.3, 
-        y: Math.PI+(Math.PI/2)+0.4,
-        z: 0
-      });
-    });
-
-    this.menuItems[3].addEventListener('click', () => {
-      this.changeState('app.about', {
-        x: 0.3, 
-        y:Math.PI-(Math.PI/2)+0.4,
-        z: 0
-      });
-    });
-
     /* custom animation for cubeCanvas */
+    let delta = 0;
     cubeCanvas.animation = () => {
-
+      delta++;
+ 
       points.updateMatrixWorld();
 
       points.linkAnchorPoint(this.menuItems[0], 0);
@@ -147,10 +167,17 @@ let MenuCubeController = class {
       cube.renderTorque();
       this.autoRotator.rotate();
 
-      // cube.rotation.x += 0.005;
+      // keep 'em rotating slooowly
       if (cube.rotating) {
-        cube.rotation.y += 0.0075;
+        cube.rotation.y += 0.003;
       }
+
+      let color = {
+        r: Math.sin(delta*.001)/2+.5,
+        g: Math.cos(delta*.001)/2+.5,
+        b: Math.log(delta*.001)/2+.5
+      }
+      this.cube.material.color.setRGB(color.r,color.g,color.b);
 
       // keep rotation to max 2*PI
       cube.rotation.x = cube.rotation.x%(2*Math.PI);
@@ -163,7 +190,12 @@ let MenuCubeController = class {
       cube.rotation.z = cube.rotation.z>=0 ? cube.rotation.z : 2*Math.PI+cube.rotation.z;
     }
 
-    // manual key rotation 
+    // touch start listener
+    this.$element[0].addEventListener('touchstart', (event) => {
+      this.onTouchStart(event);
+    });
+
+    // manual key rotation -- laaame!
 
     this.$window.addEventListener('keydown', (event) => {
       this.autoRotator.stop();
@@ -190,19 +222,24 @@ let MenuCubeController = class {
     });
   }
 
-  $onChanges() {
+  toggleItems() {
+    this.hideItems = !this.hideItems;
   }
 
-  changeState(stateName, rotatePosition) {
-    this.cube.rotating = false;
-    this.autoRotator.rotateTo(rotatePosition);
-    this.$state.go(stateName);
+  resizeCanvas(canvas, w, h) {
+    canvas.element.css({
+      width: `${w}px`,
+      height: `${h}px`
+    });
+    canvas.canvasWidth = w;
+    canvas.canvasHeight = h;
+    canvas.resize();
   }
 
-  // mouse & touch controls
+  // mouse & touch control handlers
 
   onMouseEnter() {
-    TweenMax.to(this.menuItems, 1.5, {
+    TweenMax.to(angular.element('.cube-menu-items'), 1.5, {
         opacity: 1,
         ease: Power2.easeIn
     });
@@ -230,7 +267,7 @@ let MenuCubeController = class {
   }
 
   onTouchStart(event) {
-    TweenMax.to(this.menuItems, 1.5, {
+    TweenMax.to(angular.element('.cube-menu-items'), 1.5, {
         opacity: 1,
         ease: Power2.easeIn
     });
