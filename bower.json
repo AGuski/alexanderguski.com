@@ -18,7 +18,8 @@
     "angular-material": "^1.1.1",
     "angular-aria": "^1.5.8",
     "three.js": "^0.82.0",
-    "gsap": "^1.19.0"
+    "gsap": "^1.19.0",
+    "rot.js": "^0.6.0"
   },
   "devDependencies": {},
   "overrides": {

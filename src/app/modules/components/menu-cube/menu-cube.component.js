@@ -197,29 +197,29 @@ let MenuCubeController = class {
 
     // manual key rotation -- laaame!
 
-    this.$window.addEventListener('keydown', (event) => {
-      this.autoRotator.stop();
-      switch (event.code) {
-        case 'ArrowLeft':
-          cube.rotation.y += -0.08;
-          break;
-        case 'ArrowRight':
-          cube.rotation.y += 0.08;
-          break;
-        case 'ArrowUp':
-          cube.rotation.x += -0.08;
-          break;
-        case 'ArrowDown':
-          cube.rotation.x += 0.08;
-          break;
-        case 'KeyL':
+    // this.$window.addEventListener('keydown', (event) => {
+    //   this.autoRotator.stop();
+    //   switch (event.code) {
+    //     case 'ArrowLeft':
+    //       cube.rotation.y += -0.08;
+    //       break;
+    //     case 'ArrowRight':
+    //       cube.rotation.y += 0.08;
+    //       break;
+    //     case 'ArrowUp':
+    //       cube.rotation.x += -0.08;
+    //       break;
+    //     case 'ArrowDown':
+    //       cube.rotation.x += 0.08;
+    //       break;
+    //     case 'KeyL':
           
-          break;
-        default:
-          console.log(event);
-          break;
-      }
-    });
+    //       break;
+    //     default:
+    //       console.log(event);
+    //       break;
+    //   }
+    // });
   }
 
   toggleItems() {

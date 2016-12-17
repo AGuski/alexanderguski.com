@@ -1,4 +1,4 @@
-<div id="main">
+<div id="main" ng-if="!mainCtrl.retroMode">
   <div id="bg-canvas"></div>
 
   <header class="header">
@@ -48,10 +48,10 @@
 
   <footer class="footer">
 
-    <!--<a id="day-night-switch" ng-click="mainCtrl.switchLight()">
-      <span style="color: #e4e7e8">light</span> | <span style="color: #2b2b2b">dark</span>
-    </a>-->
-    <div></div>
+    <a id="day-night-switch" ng-click="mainCtrl.activateRetroMode()">
+      retro mode
+    </a>
+    
 
     <a id="imprint-link" 
        ui-sref="app.imprint"
@@ -62,3 +62,4 @@
   <div ui-view="bottom-overlay"></div>
 
 </div>
+<div id="retro-mode" ng-hide="!mainCtrl.retroMode"></div>

@@ -5,21 +5,7 @@ let rtParameters = {
     stencilBuffer: true
   };
 
-import './postprocessing/EffectComposer';
-import './shaders/CopyShader';
-import './shaders/CustomGlitchShader';
-import './shaders/ConvolutionShader';
-import './shaders/FXAAShader';
-import './shaders/SMAAShader';
-import './postprocessing/ShaderPass';
-import './postprocessing/RenderPass'; 
-import './postprocessing/CustomGlitchPass';
-import './postprocessing/BloomPass';
-import './postprocessing/SMAAPass';
-
-import './shaders/ColorGradeShader';
-import './postprocessing/ColorGradePass';
-import './postprocessing/ClearPass';
+import './effect-composer.index';
 
 export class WebGLCanvas {
   constructor(element) {

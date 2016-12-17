@@ -244,3 +244,17 @@ main {
     opacity: 0;
   }
 }
+
+#retro-mode {
+  width:100vw;
+  height:100vh;
+  background-color: black;
+  position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > canvas {
+    position: absolute;
+    pointer-events: none;
+  }
+}
